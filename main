@@ -1,0 +1,56 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=8,vmem=16gb,walltime=12:00:00
+#PBS -N HCP-pipeline
+#PBS -V
+
+set -e
+set -x
+
+export FREESURFER_LICENSE="hayashis@iu.edu 29511 *CPmh9xvKQKHE FSg0ijTusqaQc"
+echo $FREESURFER_LICENSE > license.txt
+
+mkdir -p output
+
+#convert input into bids
+bl2bids
+
+stage=`jq -r '.stage' config.json`
+echo "Begin from $stage, continuing through..."
+
+inT1w=`jq -r '.t1' config.json`
+inT2w=`jq -r '.t2' config.json`
+
+skipbidsvalidation=""
+[ "$(jq -r .skipbidsvalidation config.json)" == "true" ] && skipbidsvalidation="--skip-bids-validation"
+
+#####################################################################################
+#####################################################################################
+# some logical checks
+if [[ $inT1w = "null" ]] || [[ $inT2w = "null" ]] ; then
+	echo "app needs minimally a T1w and a T2w. exiting"
+	exit 1
+fi
+
+# avoid templateflow problems on HPC's running singularity
+mkdir -p templateflow
+export SINGULARITYENV_TEMPLATEFLOW_HOME=$PWD/templateflow
+
+# set FreeSurfer
+[ -z "$FREESURFER_LICENSE" ] && echo "Please set FREESURFER_LICENSE in .bashrc" && exit 1;
+echo $FREESURFER_LICENSE > license.
+
+sub=$(jq -r "._inputs[0].meta.subject" config.json | tr -d "_")
+if [[ -z $sub || $sub == null ]]; then
+    sub=0
+fi
+
+singularity run -e \
+    -B `pwd`/bids:/bids \
+    -B `pwd`/output:/output \
+    docker://bids/hcppipelines \
+    --n_cpus 8 \
+    --stages $stage \
+	--license_key "$FREESURFER_LICENSE" \
+	--participant_label $sub \
+	$skipbidsvalidation \
+	/bids /output participant
