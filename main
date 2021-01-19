@@ -23,6 +23,8 @@ inT2w=`jq -r '.t2' config.json`
 skipbidsvalidation=""
 [ "$(jq -r .skipbidsvalidation config.json)" == "true" ] && skipbidsvalidation="--skip-bids-validation"
 
+processing_mode=`jq -r '.processing_mode' config.json`
+
 #####################################################################################
 #####################################################################################
 # some logical checks
@@ -48,9 +50,10 @@ singularity exec -e \
     -B `pwd`/bids:/bids \
     -B `pwd`/output:/output \
     docker://bids/hcppipelines:v4.1.3-1 \
-    `pwd`/run.py /bids /output participant \
+    ./run.py /bids /output participant \
     --n_cpus 8 \
     --stages $stage \
     --license_key "$FREESURFER_LICENSE" \
     --participant_label $sub \
+    --processing_mode $processing_mode \
     $skipbidsvalidation
