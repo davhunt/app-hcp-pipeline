@@ -15,7 +15,8 @@ mkdir -p output
 bl2bids
 
 stage=`jq -r '.stage' config.json`
-echo "Begin from $stage, continuing through..."
+#echo "Begin from $stage, continuing through..."
+echo "Running stages: $stage"
 
 inT1w=`jq -r '.t1' config.json`
 inT2w=`jq -r '.t2' config.json`
