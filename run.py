@@ -275,7 +275,12 @@ if args.analysis_level == "participant":
         t1_res = float(min(t1_zooms[:3]))
         t1_template_res = min(available_resolutions, key=lambda x:abs(float(x)-t1_res))
         #t1_spacing = layout.get_metadata(t1ws[0])["DwellTime"]
-        t1_spacing = layout.get_metadata(t1ws[0])["EffectiveEchoSpacing"]
+        #t1_spacing = layout.get_metadata(t1ws[0])["EffectiveEchoSpacing"]
+        #not all data have DwellTime set: https://github.com/BIDS-Apps/HCPPipelines/issues/65
+        if ( args.processing_mode != 'legacy'):
+            t1_spacing = layout.get_metadata(t1ws[0])["DwellTime"]
+        else:
+            t1_spacing = "NONE"
         
         t2ws = [f.path for f in layout.get(subject=subject_label,
                             suffix='T2w',
