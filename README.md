@@ -26,7 +26,7 @@ brainlife.io is publicly funded and for the sustainability of the project it is 
 [![NIH-NIBIB-R01EB029272](https://img.shields.io/badge/NIH_NIBIB-R01EB029272-green.svg)](https://grantome.com/grant/NIH/R01-EB029272-01)
 
 ### Citations
-We ask that you the following articles when publishing papers that used data, code or other resources created by the brainlife.io community.
+We ask that you cite the following articles when publishing papers that used data, code or other resources created by the brainlife.io community.
 
 1. Glasser MF, Sotiropoulos SN, Wilson JA, Coalson TS, Fischl B, Andersson JL, Xu J, Jbabdi S, Webster M, Polimeni JR, Van Essen DC, Jenkinson M; WU-Minn HCP Consortium. The minimal preprocessing pipelines for the Human Connectome Project. Neuroimage. 2013 Oct 15;80:105-24. doi: 10.1016/j.neuroimage.2013.04.127. Epub 2013 May 11. PMID: 23668970; PMCID: PMC3720813. https://pubmed.ncbi.nlm.nih.gov/23668970/
 
