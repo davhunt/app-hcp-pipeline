@@ -49,14 +49,12 @@ fi
 if [[ $inFSDIR != "null" ]] ; then
 
     #clean up previous freesurfer dir if it exists
-    rm -rf output/sub-$sub/T1w/sub-$sub
-    mkdir -p output/sub-$sub/T1w/sub-$sub
-
-    #TODO - strip alphanumeric chars?
-    #sub=$(jq -r '._inputs[] | select(.id == "t1w") | .meta.subject' config.json)
+    rm -rf output/sub-$sub/T1w
+    mkdir -p output/sub-$sub/T1w
+    
     cp -rH $inFSDIR output/sub-$sub/T1w/sub-$sub
     chmod -R +rw output/sub-$sub/T1w/sub-$sub
-    stage="PostFreeSurfer"
+    stage="PreFreeSurfer PostFreeSurfer"
 fi
 
 echo "Running stages: $stage"
