@@ -3,11 +3,11 @@
 
 # app-hcp-pipeline
 
-This App is a Brainlife wrapper for [HCP Pipelines](https://github.com/Washington-University/HCPpipelines). The HCP Pipelines product is a set of tools (primarily, but not exclusively, shell scripts) for processing MRI images for the [Human Connectome Project](https://www.humanconnectome.org/). In particular, this App uses the [BIDS APP wrapper](https://github.com/BIDS-Apps/HCPPipelines) for the pipelines, which consists of a container that includes all of the dependencies and run script that parses a BIDS dataset. This is the reason why the latest version of this App may not correspond to the latest released version of the HCP Pipelines.
+This App is a Brainlife wrapper for [HCP Pipelines](https://github.com/Washington-University/HCPpipelines). The HCP Pipelines product is a set of tools for processing Magnetic Resonance Imaging (MRI) images for the [Human Connectome Project](https://www.humanconnectome.org/). In particular, this App implements the structural preprocessing, and uses the [BIDS-app wrapper](https://github.com/BIDS-Apps/HCPPipelines), which consists of a container that includes all of the dependencies and a run script that parses a BIDS dataset (this is the reason why the latest version of this App may not correspond to the latest released version of the HCP Pipelines).
 
 #### References and resources to consider
 * HCP Pipelines main repository: https://github.com/Washington-University/HCPpipelines
-* HCP Pipelines BIDS APP wrapper: https://github.com/BIDS-Apps/HCPPipelines
+* HCP Pipelines BIDS-app wrapper: https://github.com/BIDS-Apps/HCPPipelines
 
 ### Authors
 - Giulia Bertò ([@giulia-berto](https://github.com/giulia-berto))
