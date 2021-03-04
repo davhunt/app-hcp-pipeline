@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=8,vmem=8gb,walltime=15:00:00
+#PBS -l nodes=1:ppn=8,vmem=16gb,walltime=15:00:00
 #PBS -N HCP-pipeline
 #PBS -V
 
@@ -15,11 +15,9 @@ mkdir -p output
 bl2bids
 
 stage=`jq -r '.stage' config.json`
-#echo "Begin from $stage, continuing through..."
-echo "Running stages: $stage"
-
 inT1w=`jq -r '.t1' config.json`
 inT2w=`jq -r '.t2' config.json`
+inFSDIR=`jq -r '.fsin' config.json`
 
 skipbidsvalidation=""
 [ "$(jq -r .skipbidsvalidation config.json)" == "true" ] && skipbidsvalidation="--skip-bids-validation"
@@ -40,12 +38,26 @@ export SINGULARITYENV_TEMPLATEFLOW_HOME=$PWD/templateflow
 
 # set FreeSurfer
 [ -z "$FREESURFER_LICENSE" ] && echo "Please set FREESURFER_LICENSE in .bashrc" && exit 1;
-echo $FREESURFER_LICENSE > license.
 
 sub=$(jq -r "._inputs[0].meta.subject" config.json | tr -d "_")
 if [[ -z $sub || $sub == null ]]; then
     sub=0
 fi
+
+# if freesurfer provided, copy it to the same level as output dir
+# TODO why can't we just symlink this in?
+if [[ $inFSDIR != "null" ]] ; then
+
+    #clean up previous freesurfer dir if it exists
+    rm -rf output/sub-$sub/T1w
+    mkdir -p output/sub-$sub/T1w
+    
+    cp -rH $inFSDIR output/sub-$sub/T1w/sub-$sub
+    chmod -R +rw output/sub-$sub/T1w/sub-$sub
+    stage="PreFreeSurfer PostFreeSurfer"
+fi
+
+echo "Running stages: $stage"
 
 singularity exec -e \
     -B `pwd`/bids:/bids \

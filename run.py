@@ -12,8 +12,12 @@ from functools import partial
 from collections import OrderedDict
 from pathlib import Path
 import numpy as np
+import json
 
 print("Running local run.py")
+with open('config.json') as f:
+	data = json.load(f)
+	notalcheck = data["notalcheck"]
 
 def run(command, env={}, cwd=None):
     merged_env = os.environ
@@ -89,6 +93,8 @@ def run_freesurfer(**args):
       '--processing-mode="{processing_mode}" '
     if args["processing_mode"] != "LegacyStyleData":
         cmd = cmd + '--t2="{path}/{subject}/T1w/T2w_acpc_dc_restore.nii.gz" '
+    if notalcheck:
+        cmd = cmd + '--extra-reconall-arg=-notal-check '
     cmd = cmd.format(**args)
 
     if not os.path.exists(os.path.join(args["subjectDIR"], "fsaverage")):
