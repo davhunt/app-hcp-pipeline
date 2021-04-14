@@ -45,7 +45,7 @@ https://github.com/Washington-University/HCPpipelines/wiki/Installation-and-Usag
 
 ### Inputs
 
-The structural prepocessing is subdivided into 3 parts (Pre-FreeSurfer processing, FreeSurfer processing, and Post-FreeSurfer processing), and requires at least one T1w and one T2w scan. If you input a freesurfer folder (optional), the FreeSurfer step will be skipped.
+The structural prepocessing is subdivided into 3 parts (Pre-FreeSurfer processing, FreeSurfer processing, and Post-FreeSurfer processing), and requires at least one T1w and one T2w scan. If you input a freesurfer folder (optional), the FreeSurfer step will be skipped. WARNING: FreeSurfer 7.X is not currently supported due to poor quality surface reconstructions. Please provide a FreeSurfer 6.0 output.
 
 ### Outputs
 
