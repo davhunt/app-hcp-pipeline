@@ -57,6 +57,9 @@ if [[ $inFSDIR != "null" ]] ; then
     stage="PreFreeSurfer PostFreeSurfer"
 fi
 
+#patch to avoid T2wToT1wReg.sh script to fail
+cp /output/sub-${sub}/T2w/T2wToT1wReg/T2w2T1w.mat  /output/sub-${sub}/T2w/T2wToT1wReg/T2w2T1w_init.mat
+
 echo "Running stages: $stage"
 
 singularity exec -e \
