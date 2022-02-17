@@ -62,7 +62,7 @@ echo "Running stages: $stage"
 singularity exec -e \
     -B `pwd`/bids:/bids \
     -B `pwd`/output:/output \
-    docker://bids/hcppipelines:v4.3.0-3 \
+    docker://bids/hcppipelines:v4.1.3 \
     ./run.py /bids /output participant \
     --n_cpus 8 \
     --stages $stage \
