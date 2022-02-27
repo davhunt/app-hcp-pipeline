@@ -124,8 +124,7 @@ def run_post_freesurfer(**args):
       '--freesurferlabels="{HCPPIPEDIR_Config}/FreeSurferAllLut.txt" ' + \
       '--refmyelinmaps="{HCPPIPEDIR_Templates}/standard_mesh_atlases/Conte69.MyelinMap_BC.164k_fs_LR.dscalar.nii" ' + \
       '--regname="{regname}" ' + \
-      '--processing-mode="{processing_mode}" ' + \
-      '--printcom=""'
+      '--processing-mode="{processing_mode}"
     cmd = cmd.format(**args)
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 

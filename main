@@ -55,6 +55,10 @@ if [[ $inFSDIR != "null" ]] ; then
     cp -rH $inFSDIR output/sub-$sub/T1w/sub-$sub
     chmod -R +rw output/sub-$sub/T1w/sub-$sub
     stage="PreFreeSurfer PostFreeSurfer"
+    if [ $(head -n 1 output/sub-$sub/T1w/sub-$sub/mri/transforms/eye.dat) == "$sub" ];
+      then
+      sed -i "s/$sub/sub-$sub/g" output/sub-$sub/T1w/sub-$sub/mri/transforms/eye.dat # bbregister sometimes reads subject ID from here? so change it to sub-<sub>
+    fi
 fi
 
 echo "Running stages: $stage"
