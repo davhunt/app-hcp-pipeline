@@ -124,7 +124,7 @@ def run_post_freesurfer(**args):
       '--freesurferlabels="{HCPPIPEDIR_Config}/FreeSurferAllLut.txt" ' + \
       '--refmyelinmaps="{HCPPIPEDIR_Templates}/standard_mesh_atlases/Conte69.MyelinMap_BC.164k_fs_LR.dscalar.nii" ' + \
       '--regname="{regname}" ' + \
-      '--processing-mode="{processing_mode}"
+      '--processing-mode="{processing_mode}" '
     cmd = cmd.format(**args)
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 
@@ -308,6 +308,7 @@ if args.analysis_level == "participant":
             anat_processing_mode = "LegacyStyleData"
 
         # parse fieldmaps for structural processing
+        # make sure magnitude.nii.gz is split into magnitude1 + magnitude2 by now
         fieldmap_set = layout.get_fieldmap(t1ws[0], return_list=True)
         fmap_args = {"fmapmag": "NONE",
                      "fmapphase": "NONE",
@@ -336,18 +337,25 @@ if args.analysis_level == "participant":
                 run("mkdir -p %s/tmp/%s/ && fslmerge -t %s %s %s"%(args.output_dir,
                 subject_label,
                 merged_file,
-                fieldmap_set["magnitude1"],
-                fieldmap_set["magnitude2"]))
+                fieldmap_set[0]["magnitude1"],
+                fieldmap_set[0]["magnitude2"]))
+                #fieldmap_set["magnitude1"],
+                #fieldmap_set["magnitude2"]))
 
-                phasediff_metadata = layout.get_metadata(fieldmap_set["phasediff"])
+                #phasediff_metadata = layout.get_metadata(fieldmap_set["phasediff"])
+                phasediff_metadata = layout.get_metadata(fieldmap_set[0]["phasediff"])
                 te_diff = phasediff_metadata["EchoTime2"] - phasediff_metadata["EchoTime1"]
                 # HCP expects TE in miliseconds
                 te_diff = te_diff*1000.0
 
                 fmap_args.update({"fmapmag": merged_file,
-                                  "fmapphase": fieldmap_set["phasediff"],
+                                  "fmapphase": fieldmap_set[0]["phasediff"],
                                   "echodiff": "%.6f"%te_diff,
                                   "avgrdcmethod": "SiemensFieldMap"})
+                #fmap_args.update({"fmapmag": merged_file,
+                #                  "fmapphase": fieldmap_set["phasediff"],
+                #                  "echodiff": "%.6f"%te_diff,
+                #                  "avgrdcmethod": "SiemensFieldMap"})
             elif fieldmap_set[0]["suffix"] == "epi":
                 SEPhaseNeg = None
                 SEPhasePos = None
